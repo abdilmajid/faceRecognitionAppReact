@@ -8,6 +8,7 @@ import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 
 
 
@@ -35,10 +36,32 @@ class App extends Component {
       input: '',
       imgUrl: '',
       box: {},
-      route: 'signin'
+      route: 'signin',
+      users: {
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        score: 0,
+        regDate: ''
+      }
     }
   }
   
+
+  newUser = (data) => {
+    this.setState({users: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      score: data.score,
+      regDate: data.regDate
+    }})
+  }
+
+  
+
   calFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputImg'); 
@@ -68,46 +91,71 @@ class App extends Component {
       .predict(
         Clarifai.FACE_DETECT_MODEL, 
         this.state.input)
-        .then( response => this.displayFaceBox(this.calFaceLocation(response)))
+        .then( response => {
+          if(response) {
+            fetch('http://localhost:3001/image', {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                id: this.state.users.id
+              })
+            })
+              .then(res => res.json)
+              .then(count => {
+                this.setState(Object.assign(this.state.users, {score: count}))
+              })
+          }
+          this.displayFaceBox(this.calFaceLocation(response))
+        })
         .catch( err => console.log(err));
   }
+  
 
 
-  onRouteChange = () => {
-    this.setState({route: 'home'})
-  }
-
-  onSignOut = () => {
-    this.setState({route: 'signin'})
+  onRouteChange = (route) => {
+    this.setState({route: route})
   }
 
 
   render() {
+    const {route, imgUrl, box} = this.state;
     return (
       <div className="App">
         <Particles className='particles'
                 params={particlesOptions}
               />
-        { this.state.route !== 'signin'
-        ? <Navigation onSignOut={this.onSignOut}/>
-        : <div></div>
-        }      
-        { this.state.route === 'signin'
-        ? <SignIn onRouteChange={this.onRouteChange}/>
-        : <div>
-            <Logo />
-            <Rank />
-            <ImageLinkForm 
-                onInputChange={this.onInputChange}
-                onButtonSubmit={this.onButtonSubmit}
-                />   
-            <FaceRecogrition 
-                imgUrl={this.state.imgUrl}
-                box={this.state.box}
-                />
-           </div>    
+        {route === 'home'      
+         ? <Navigation onRouteChange={this.onRouteChange}/>
+         : <div></div>   
+        }       
+        { route === 'home'
+            ? <div>
+                  <Logo />
+                  <Rank 
+                    name={this.state.users.name} 
+                    score={this.state.users.score}
+                  />
+                  <ImageLinkForm 
+                      onInputChange={this.onInputChange}
+                      onButtonSubmit={this.onButtonSubmit}
+                      />   
+                  <FaceRecogrition 
+                      imgUrl={imgUrl}
+                      box={box}
+                      />
+                </div>  
+            : (
+                route === 'signin' 
+                ? <SignIn 
+                    newUser={this.newUser} 
+                    onRouteChange={this.onRouteChange}
+                  />
+                : <Register 
+                    newUser={this.newUser} 
+                    onRouteChange={this.onRouteChange}
+                  />
+              )
           }
-              
       </div>
     );
   }
