@@ -23,22 +23,29 @@ class Register extends Component {
   }
 
   onRegisterSubmit = () => {
-    fetch('http://localhost:3001/register', {
-      method: 'post',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        name: this.state.regName,
-        email: this.state.regEmail,
-        password: this.state.regPassword
-      })
-    })
-      .then(res => res.json())
-      .then(user => {
-        if(user){
-          this.props.newUser('user')
-          this.props.onRouteChange('home')
-        }
-      })
+    const {regName, regEmail, regPassword} = this.state;
+    if(regName.length > 0 && 
+       regEmail.length > 0 &&
+       regPassword.length > 0) {
+        fetch('http://localhost:3001/register', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            name: regName,
+            email: regEmail,
+            password: regPassword
+          })
+        })
+          .then(res => res.json())
+          .then(user => {
+            if(user === 'unable to register'){
+              alert('Sorry Email already exists')
+            } else {
+              this.props.newUser('user')
+              this.props.onRouteChange('home')
+            }
+          })
+    }
   }
 
 

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
 class SignIn extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       signInEmail: '',
       signInPassword: ''
@@ -17,7 +17,7 @@ class SignIn extends Component {
     this.setState({signInPassword: event.target.value})
   }
 
-  onSignInSubmit = () =>{
+  onSignInSubmit = () => {
     fetch('http://localhost:3001/signin', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -26,11 +26,13 @@ class SignIn extends Component {
         password: this.state.signInPassword
       })
     })
-      .then(res => res.json())
-      .then(data => {
-        if(data.id){
-          this.props.newUser(data);
+      .then(response => response.json())
+      .then(user => {
+        if (user[0].id) {
+          this.props.newUser(user)
           this.props.onRouteChange('home');
+        } else {
+          alert('Wrong Email/Password')
         }
       })
   }
@@ -38,6 +40,7 @@ class SignIn extends Component {
 
   render() {
     const {onRouteChange} = this.props
+    console.log(this.props)
     return (
       <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center'>
           <main className='pa4 nlack-50'>

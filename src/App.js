@@ -29,33 +29,39 @@ const particlesOptions = {
   }
 }
 
-class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      input: '',
-      imgUrl: '',
-      box: {},
-      route: 'signin',
-      users: {
-        id: '',
-        name: '',
-        email: '',
-        password: '',
-        score: 0,
-        regDate: ''
-      }
+
+const initialState = {
+    input: '',
+    imgUrl: '',
+    box: {},
+    route: 'signin',
+    isSignedIn: false,
+    user: {
+      id: '',
+      name: '',
+      email: '',
+      password: '',
+      entries: 0,
+      regDate: ''
     }
+  }
+
+
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = initialState
   }
   
 
   newUser = (data) => {
-    this.setState({users: {
+    this.setState({user: {
       id: data.id,
       name: data.name,
       email: data.email,
       password: data.password,
-      score: data.score,
+      entries: data.entries,
       regDate: data.regDate
     }})
   }
@@ -97,12 +103,12 @@ class App extends Component {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
-                id: this.state.users.id
+                id: this.state.user.id
               })
             })
               .then(res => res.json)
               .then(count => {
-                this.setState(Object.assign(this.state.users, {score: count}))
+                this.setState(Object.assign(this.state.user, {entries: count}))
               })
           }
           this.displayFaceBox(this.calFaceLocation(response))
@@ -113,6 +119,11 @@ class App extends Component {
 
 
   onRouteChange = (route) => {
+    if(route === 'signout') {
+      this.setState(initialState)
+    } else if(route === 'home') {
+      this.setState({isSignedIn: true})
+    }
     this.setState({route: route})
   }
 
@@ -132,8 +143,8 @@ class App extends Component {
             ? <div>
                   <Logo />
                   <Rank 
-                    name={this.state.users.name} 
-                    score={this.state.users.score}
+                    name={this.state.user.name} 
+                    entries={this.state.user.entries}
                   />
                   <ImageLinkForm 
                       onInputChange={this.onInputChange}
