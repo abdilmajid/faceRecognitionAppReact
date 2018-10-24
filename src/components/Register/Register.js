@@ -27,7 +27,7 @@ class Register extends Component {
     if(regName.length > 0 && 
        regEmail.length > 0 &&
        regPassword.length > 0) {
-        fetch('http://localhost:3001/register', {
+        fetch('https://obscure-stream-76864.herokuapp.com/register', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
