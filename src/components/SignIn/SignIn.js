@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 
+
+//https://obscure-stream-76864.herokuapp.com
+const apiCall = `http://localhost:3003`
+
 class SignIn extends Component {
   constructor(props) {
     super(props)
@@ -18,7 +22,7 @@ class SignIn extends Component {
   }
 
   onSignInSubmit = () => {
-    fetch('https://obscure-stream-76864.herokuapp.com/signin', {
+    fetch(`${apiCall}/signin`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -28,7 +32,7 @@ class SignIn extends Component {
     })
       .then(response => response.json())
       .then(user => {
-        if (user[0].id) {
+        if (user.id) {
           this.props.newUser(user)
           this.props.onRouteChange('home');
         } else {
@@ -50,10 +54,10 @@ class SignIn extends Component {
                 <legend className='f4 fw6 ph0 mh0'>Sign In</legend>
                 <div className='mt3'>
                   <label 
-                    className='db fw6 1h-copy f6' 
+                    className='db fw6 lh-copy f6' 
                     htmlFor='email-address'>Email</label>
                   <input
-                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-50' 
+                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='email' 
                     name='email-address' 
                     id='email-address'
@@ -64,7 +68,7 @@ class SignIn extends Component {
                   <label className='db fw6 lh-copy f6'
                         htmlFor='password'>Password</label>
                   <input 
-                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-50' 
+                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='password' 
                     name='password' 
                     id='password'
@@ -79,7 +83,7 @@ class SignIn extends Component {
                     value='Sign in' 
                     onClick={this.onSignInSubmit}/> 
               </div>
-              <div className='1h-copy mt3'>
+              <div className='lh-copy mt3'>
                 <p onClick={() => onRouteChange('register')} className='f6 link dim black pointer db'>Register</p>
               </div>
             </div>

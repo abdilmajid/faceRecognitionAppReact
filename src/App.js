@@ -6,21 +6,23 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecogrition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
+// import Clarifai from 'clarifai';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
 
 
-const app = new Clarifai.App({
-  apiKey: '9cbd5e2736504195ba15e7aaa8b87ad4'
- });
+// const app = new Clarifai.App({
+//   apiKey: '9cbd5e2736504195ba15e7aaa8b87ad4'
+//  });
 
+//https://obscure-stream-76864.herokuapp.com
+const apiCall = `http://localhost:3003`
 
 const particlesOptions = {
   particles: {
       number: {
-        value: 180,
+        value: 30,
         density: {
           enable: true,
           value_area: 800
@@ -49,8 +51,8 @@ const initialState = {
 
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = initialState
   }
   
@@ -93,20 +95,29 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imgUrl: this.state.input})
-    app.models
-      .predict(
-        Clarifai.FACE_DETECT_MODEL, 
-        this.state.input)
+    // app.models
+    //   .predict(
+    //     Clarifai.FACE_DETECT_MODEL, 
+    //     this.state.input)
+        fetch(`${apiCall}/imageurl`, {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            input: this.state.input
+          })
+        })
+        .then(res => res.json())
         .then( response => {
           if(response) {
-            fetch('https://obscure-stream-76864.herokuapp.com/image', {
+            fetch(`${apiCall}/image`, {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
                 id: this.state.user.id
               })
             })
-              .then(res => res.json)
+              .then(res => {
+                res.json()})
               .then(count => {
                 this.setState(Object.assign(this.state.user, {entries: count}))
               })
@@ -129,7 +140,7 @@ class App extends Component {
 
 
   render() {
-    const {route, imgUrl, box} = this.state;
+    const { route, imgUrl, box} = this.state;
     return (
       <div className="App">
         <Particles className='particles'
