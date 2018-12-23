@@ -6,15 +6,10 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecogrition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
 import Particles from 'react-particles-js';
-// import Clarifai from 'clarifai';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
 
-
-// const app = new Clarifai.App({
-//   apiKey: '9cbd5e2736504195ba15e7aaa8b87ad4'
-//  });
 
 //https://obscure-stream-76864.herokuapp.com
 const apiCall = `http://localhost:3003`
@@ -95,10 +90,6 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imgUrl: this.state.input})
-    // app.models
-    //   .predict(
-    //     Clarifai.FACE_DETECT_MODEL, 
-    //     this.state.input)
         fetch(`${apiCall}/imageurl`, {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
