@@ -130,16 +130,17 @@ class App extends Component {
 
 
   render() {
-    const { route, imgUrl, box} = this.state;
+    const { route, imgUrl, box, isSignedIn} = this.state;
     return (
       <div className="App">
-        <Particles className='particles'
+        <Particles 
+                className='particles'
                 params={particlesOptions}
               />
-        {route === 'home'      
-         ? <Navigation onRouteChange={this.onRouteChange}/>
-         : <div></div>   
-        }       
+         <Navigation 
+                isSignedIn={isSignedIn} 
+                onRouteChange={this.onRouteChange} 
+              />      
         { route === 'home'
             ? <div>
                   <Logo />
@@ -157,7 +158,7 @@ class App extends Component {
                       />
                 </div>  
             : (
-                route === 'signin' 
+                route === 'signin' || route === 'signout'
                 ? <SignIn 
                     newUser={this.newUser} 
                     onRouteChange={this.onRouteChange}
