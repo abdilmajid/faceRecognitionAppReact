@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-//https://obscure-stream-76864.herokuapp.com
+
 const apiCall = `http://localhost:3003`
 
 class SignIn extends Component {

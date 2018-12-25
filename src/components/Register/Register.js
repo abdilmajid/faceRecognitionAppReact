@@ -1,52 +1,52 @@
 import React, {Component} from 'react'
 
 
-//https://obscure-stream-76864.herokuapp.com
+
 const apiCall = `http://localhost:3003`
 
 class Register extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      regName: '',
-      regEmail: '',
-      regPassword: ''
+      name: '',
+      email: '',
+      password: ''
     }
   }
 
   onNameChange = (event) => {
-    this.setState({regName: event.target.value})
+    this.setState({name: event.target.value})
   }
   
   onEmailChange = (event) => {
-    this.setState({regEmail: event.target.value})
+    this.setState({email: event.target.value})
   }
 
   onPasswordChange = (event) => {
-    this.setState({regPassword: event.target.value})
+    this.setState({password: event.target.value})
   }
 
   onRegisterSubmit = () => {
-    const {regName, regEmail, regPassword} = this.state;
-    if(regName.length > 0 && 
-       regEmail.length > 0 &&
-       regPassword.length > 0) {
+    const {name, email, password} = this.state;
+    if(name.length > 0 && 
+      email.length > 0 &&
+       password.length > 0) {
         fetch(`${apiCall}/register`, {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            name: regName,
-            email: regEmail,
-            password: regPassword
+            name: name,
+            email: email,
+            password: password
           })
         })
           .then(res => res.json())
           .then(user => {
-            if(user === 'unable to register'){
-              alert('Sorry Email already exists')
-            } else {
-              this.props.newUser('user')
+            if(user.id){
+              this.props.newUser(user)
               this.props.onRouteChange('home')
+            } else {
+              alert('Sorry Email already exists')
             }
           })
     }
@@ -66,7 +66,7 @@ class Register extends Component {
                  <label className='db fw6 1h-copy f6' 
                        htmlFor='name'>Name</label>
                  <input 
-                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-50' 
+                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='text' 
                     name='name' 
                     id='name'
@@ -77,7 +77,7 @@ class Register extends Component {
                  <label className='db fw6 1h-copy f6' 
                        htmlFor='email-address'>Email</label>
                  <input 
-                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-50' 
+                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='email' 
                     name='email-address' 
                     id='email-address'
@@ -88,7 +88,7 @@ class Register extends Component {
                  <label className='db fw6 lh-copy f6'
                        htmlFor='password'>Password</label>
                  <input 
-                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-50' 
+                    className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='password' 
                     name='password' 
                     id='password'

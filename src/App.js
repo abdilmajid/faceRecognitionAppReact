@@ -11,7 +11,7 @@ import Register from './components/Register/Register';
 
 
 
-//https://obscure-stream-76864.herokuapp.com
+
 const apiCall = `http://localhost:3003`
 
 const particlesOptions = {
