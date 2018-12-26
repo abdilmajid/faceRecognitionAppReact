@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 
 
-const apiCall = `https://git.heroku.com/immense-cliffs-57638.git`
+const apiCall = `https://damp-anchorage-41821.herokuapp.com`
 
 class Register extends Component {
   constructor(props) {
