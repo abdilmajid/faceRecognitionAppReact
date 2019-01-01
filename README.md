@@ -69,7 +69,7 @@ This project is a simple face recognition app that uses the [Clarifai Api](https
 <img src="readme/page01.png" alt="signin" height=400 align="center"/></p>
 <br>
 
-:star: If a user trys to sign in with an incorrect Email/Password, an error message will pop up, this also happens if the fields are empty when trying to sign in.
+:star: If a user tries to sign in with an incorrect Email/Password, an error message will pop up, this also happens if the fields are empty when trying to sign in.
 
 <p align="center">
 <img src="readme/02errormsg.png" alt="error1" height=300 align="center"/></p>
@@ -87,7 +87,7 @@ This project is a simple face recognition app that uses the [Clarifai Api](https
 <img src="readme/04errorreg.png" alt="error2" height=360 align="center"/></p>
 <br>
 
-:star: When a user submits the **Registration** form, the app sends that data to the server which inserts it to the database. The data is inserted into a login and user table. When the user first creates an account they enter a password which is stored as a hash. When the user tries to loggin again the server uses **BCRYPT** to validate the password.
+:star: When a user submits the **Registration** form, the app sends that data to the server which inserts it to the database. The data is inserted into a login and user table. When the user first creates an account they enter a password which is stored as a hash. When the user tries to login again the server uses **BCRYPT** to validate the password.
 
 
 <p align="center">
@@ -97,14 +97,14 @@ This project is a simple face recognition app that uses the [Clarifai Api](https
 <img src="readme/06pglogin.png" alt="login" height=80 align="center"/></p>
 <br>
 
-:star: After the user is registerd or signs in, they are taken to the main page. This page displays the users name as well as the number of submissions made. 
+:star: After the user is registered or signs in, they are taken to the main page. This page displays the users name as well as the number of submissions made. 
 
 <p align="center">
 <img src="readme/05main.png" alt="homepage" height=350 align="center"/></p>
 <br>
 
 
-:star: Ater the user inserts an image url and clicks **Detect**, a blue box appears over the location of the face. When the user clicks the detect button, the app send the image to the **Clarifai** api which uses an ai to guess the location of the faces in an image. The data that is sent back from **Clarifai** is coordinate information which is mapped out using css. After every submission a counter increments, showing the number of submissions a user has made.
+:star: After the user inserts an image url and clicks **Detect**, a blue box appears over the location of the face. When the user clicks the detect button, the app send the image to the **Clarifai** API which uses an AI to guess the location of the faces in an image. The data that is sent back from **Clarifai** is coordinate information which is mapped out using CSS. After every submission a counter increments, showing the number of submissions a user has made.
 
 <p align="center">
 <img src="readme/07face1.png" alt="face1" height=450 align="center"/></p>
