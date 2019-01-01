@@ -14,6 +14,7 @@ import Register from './components/Register/Register';
 
 const apiCall = `https://damp-anchorage-41821.herokuapp.com`
 
+
 const particlesOptions = {
   particles: {
       number: {
