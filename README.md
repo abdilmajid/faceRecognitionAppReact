@@ -3,7 +3,7 @@
 > This is a Full Stack Application that uses React for the frontend, Node-Express and PostgreSQL for the backend
 
 <p align="center">
-  <a href="https://storeapp-frontend.herokuapp.com/"><img src="readme/faceApp.gif" alt="FaceApp"/></a>
+  <a href="https://faceapp-front-end.herokuapp.com/"><img src="readme/faceApp.gif" alt="FaceApp"/></a>
 </p>
 
 <br>
