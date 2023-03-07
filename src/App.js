@@ -5,27 +5,14 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecogrition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
-import Particles from 'react-particles-js';
+import ParticlesBg from 'particles-bg';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
 
 
 
-const apiCall = `https://damp-anchorage-41821.herokuapp.com`
-
-
-const particlesOptions = {
-  particles: {
-      number: {
-        value: 30,
-        density: {
-          enable: true,
-          value_area: 800
-        }
-      }
-  }
-}
+const apiCall = `http://localhost:4009`
 
 
 const initialState = {
@@ -71,7 +58,7 @@ class App extends Component {
     const image = document.getElementById('inputImg'); 
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log(clarifaiFace);
+    // console.log(clarifaiFace);
     return {
       leftCol: clarifaiFace.left_col * width,
       topRow: clarifaiFace.top_row * height,
@@ -81,7 +68,7 @@ class App extends Component {
   }
 
   displayFaceBox = (box) => {
-    console.log(box);
+    // console.log(box);
     this.setState({box: box});
   }
 
@@ -134,10 +121,7 @@ class App extends Component {
     const { route, imgUrl, box, isSignedIn} = this.state;
     return (
       <div className="App">
-        <Particles 
-                className='particles'
-                params={particlesOptions}
-              />
+        <ParticlesBg type='circle' bg={true}/>
          <Navigation 
                 isSignedIn={isSignedIn} 
                 onRouteChange={this.onRouteChange} 
@@ -159,7 +143,7 @@ class App extends Component {
                       />
                 </div>  
             : (
-                route === 'signin' || route === 'signout'
+                route === 'signin' 
                 ? <SignIn 
                     newUser={this.newUser} 
                     onRouteChange={this.onRouteChange}
