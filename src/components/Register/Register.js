@@ -1,34 +1,23 @@
-import React, {Component} from 'react'
-
-
+import { useState } from 'react';
 
 const apiCall = `http://localhost:4009`
 
 
-class Register extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
+function Register (props) {
+  const initialState = {
       name: '',
       email: '',
       password: ''
-    }
   }
 
-  onNameChange = (event) => {
-    this.setState({name: event.target.value})
-  }
+  const [ register, setRegister ] = useState(initialState);
+
+  const onNameChange = (event) => setRegister({name: event.target.value});
+  const onEmailChange = (event) => setRegister({email: event.target.value});
+  const onPasswordChange = (event) => setRegister({password: event.target.value});
   
-  onEmailChange = (event) => {
-    this.setState({email: event.target.value})
-  }
-
-  onPasswordChange = (event) => {
-    this.setState({password: event.target.value})
-  }
-
-  onRegisterSubmit = () => {
-    const {name, email, password} = this.state;
+  const onRegisterSubmit = () => {
+    const {name, email, password} = register;
     if(name.length > 0 && 
       email.length > 0 &&
        password.length > 0) {
@@ -44,8 +33,8 @@ class Register extends Component {
           .then(res => res.json())
           .then(user => {
             if(user.id){
-              this.props.newUser(user)
-              this.props.onRouteChange('home')
+              props.newUser(user)
+              props.onRouteChange('home')
             } else {
               alert('Sorry Email already exists')
             }
@@ -54,8 +43,6 @@ class Register extends Component {
   }
 
 
-
-  render() {
     return (
       <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center'>
          <main className='pa4 nlack-50'>
@@ -71,7 +58,7 @@ class Register extends Component {
                     type='text' 
                     name='name' 
                     id='name'
-                    onChange={this.onNameChange}
+                    onChange={onNameChange}
                   />       
                </div>
                <div className='mt3'>
@@ -82,7 +69,7 @@ class Register extends Component {
                     type='email' 
                     name='email-address' 
                     id='email-address'
-                    onChange={this.onEmailChange}
+                    onChange={onEmailChange}
                   />       
                </div>
                <div className='mv3'>
@@ -93,7 +80,7 @@ class Register extends Component {
                     type='password' 
                     name='password' 
                     id='password'
-                    onChange={this.onPasswordChange}
+                    onChange={onPasswordChange}
                   /> 
                </div>
              </fieldset>
@@ -102,14 +89,14 @@ class Register extends Component {
                    className='b ph3 pv2 input-reset ba bg-transparent b--black grow hover-white pointer f6 dib' 
                    type='submit' 
                    value='Register' 
-                   onClick={this.onRegisterSubmit}/> 
+                   onClick={onRegisterSubmit}/> 
              </div>
            </div>
          </main>
        </article> 
      )
   }
-}
+
 
 
 export default Register;
