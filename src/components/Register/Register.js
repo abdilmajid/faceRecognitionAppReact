@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 
 const apiCall = `http://localhost:4009`
 
@@ -10,7 +10,9 @@ function Register ({newUser,onRouteChange}) {
       password: ''
   }
 
-  const [ register, setRegister ] = useState(initialState);
+  // const [ register, setRegister ] = useState(initialState);
+
+  const [ register, setRegister ] = useReducer((register, newRegiseter)=>({...register,...newRegiseter}), initialState)
 
   const onNameChange = (event) => setRegister({name: event.target.value});
   const onEmailChange = (event) => setRegister({email: event.target.value});

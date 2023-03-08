@@ -29,7 +29,6 @@ function SignIn ({newUser, onRouteChange}) {
     })
       .then(response => response.json())
       .then(user => {
-        console.log(user)
         if (user.id) {
           newUser(user)
           onRouteChange('home');
@@ -37,8 +36,6 @@ function SignIn ({newUser, onRouteChange}) {
           alert('Wrong Email/Password')
         }
       })
-      
-    console.log(signIn)
   }
 
 
