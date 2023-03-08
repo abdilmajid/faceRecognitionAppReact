@@ -1,5 +1,3 @@
-import React from 'react';
-
 
 const Navigation = ({onRouteChange, isSignedIn}) => {
   if(isSignedIn){
@@ -11,7 +9,7 @@ const Navigation = ({onRouteChange, isSignedIn}) => {
   } else {
       return(
         <nav style={{display: 'flex', justifyContent: 'flex-end'}}>
-          <p className='f3 link dim black underline pa3 pointer' onClick={() => onRouteChange('signin')}>Sign Out</p>
+          <p className='f3 link dim black underline pa3 pointer' onClick={() => onRouteChange('signin')}>Sign In</p>
           <p onClick={() => onRouteChange('register')} className='f3 link dim black underline pa3 pointer'>Register</p>
         </nav>
   );}

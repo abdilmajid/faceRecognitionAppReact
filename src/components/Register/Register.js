@@ -3,7 +3,7 @@ import { useState } from 'react';
 const apiCall = `http://localhost:4009`
 
 
-function Register (props) {
+function Register ({newUser,onRouteChange}) {
   const initialState = {
       name: '',
       email: '',
@@ -33,8 +33,8 @@ function Register (props) {
           .then(res => res.json())
           .then(user => {
             if(user.id){
-              props.newUser(user)
-              props.onRouteChange('home')
+              newUser(user)
+              onRouteChange('home')
             } else {
               alert('Sorry Email already exists')
             }
@@ -49,9 +49,9 @@ function Register (props) {
            <div className='measure'>
              <fieldset id='sign_up' 
                        className='ba b--transparent ph0 mh0'>
-               <legend className='f4 fw6 ph0 mh0'>Register</legend>
+               <legend className='f2 fw6 ph0 mh0'>Register</legend>
                <div className='mt3'>
-                 <label className='db fw6 1h-copy f6' 
+                 <label className='db fw6 1h-copy f5' 
                        htmlFor='name'>Name</label>
                  <input 
                     className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
@@ -62,7 +62,7 @@ function Register (props) {
                   />       
                </div>
                <div className='mt3'>
-                 <label className='db fw6 1h-copy f6' 
+                 <label className='db fw6 1h-copy f5' 
                        htmlFor='email-address'>Email</label>
                  <input 
                     className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
@@ -73,7 +73,7 @@ function Register (props) {
                   />       
                </div>
                <div className='mv3'>
-                 <label className='db fw6 lh-copy f6'
+                 <label className='db fw6 lh-copy f5'
                        htmlFor='password'>Password</label>
                  <input 
                     className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
@@ -86,7 +86,7 @@ function Register (props) {
              </fieldset>
              <div className=''>
                <input 
-                   className='b ph3 pv2 input-reset ba bg-transparent b--black grow hover-white pointer f6 dib' 
+                   className='b ph3 pv2 input-reset ba bg-transparent b--black grow hover-white pointer f4 dib' 
                    type='submit' 
                    value='Register' 
                    onClick={onRegisterSubmit}/> 

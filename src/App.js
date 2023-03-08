@@ -1,35 +1,35 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
-import ParticlesBg from 'particles-bg';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 
 const apiCall = `http://localhost:4009`
 
-function App () {
-  const initialState = {
-    input: '',
-    imgUrl: '',
-    box: {},
-    route: 'signin',
-    isSignedIn: false,
-    user: {
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-      entries: 0,
-      regDate: ''
-    }
+const initialState = {
+  input: '',
+  imgUrl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    entries: 0,
+    regDate: ''
   }
-  
-  const [ user, setUser ] = useState(initialState);
-  
+}
+
+function App () {
+  const [ user, setUser ] = useReducer((user, newUser)=>({...user,...newUser}), initialState)
+
+
   const newUser = (data) => {
     setUser({user: {
       id: data.id,
@@ -47,7 +47,6 @@ function App () {
     const image = document.getElementById('inputImg'); 
     const width = Number(image.width);
     const height = Number(image.height);
-    // console.log(clarifaiFace);
     return {
       leftCol: clarifaiFace.left_col * width,
       topRow: clarifaiFace.top_row * height,
@@ -98,43 +97,26 @@ function App () {
   }
 
 
+  
   const { route, imgUrl, box, isSignedIn} = user;
   
   return (
     <div className="App">
-      <ParticlesBg type='circle' bg={true}/>
-       <Navigation 
-              isSignedIn={isSignedIn} 
-              onRouteChange={onRouteChange} 
-            />      
+      {/* <ParticlesBg color="#F0FFF0" type='thick' bg={true}/> */}
+       <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange}/>      
       { route === 'home'
-          ? <div>
-                <Logo />
-                <Rank 
-                  name={user.user.name} 
-                  entries={user.user.entries}
-                />
-                <ImageLinkForm 
-                    onInputChange={onInputChange}
-                    onButtonSubmit={onButtonSubmit}
-                    />   
-                <FaceRecognition 
-                    imgUrl={imgUrl}
-                    box={box}
-                    />
-              </div>  
-          : (
-              route === 'signin' 
-              ? <SignIn 
-                  newUser={newUser} 
-                  onRouteChange={onRouteChange}
-                />
-              : <Register 
-                  newUser={newUser} 
-                  onRouteChange={onRouteChange}
-                />
-            )
-        }
+      ? <div>
+            <Logo />
+            <Rank name={user.user.name} entries={user.user.entries}/>
+            <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit}/>   
+            <FaceRecognition imgUrl={imgUrl} box={box}/>
+          </div>  
+      : (
+          route === 'signin' 
+          ? <SignIn newUser={newUser} onRouteChange={onRouteChange} />
+          : <Register newUser={newUser} onRouteChange={onRouteChange}/>
+        )
+      }
     </div>
   );
 }
