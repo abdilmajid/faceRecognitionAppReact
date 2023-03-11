@@ -7,33 +7,51 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Rank from './components/Rank/Rank';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
-import formReducer ,{ initialUserState } from './formReducer';
 
 const apiCall = `http://localhost:4009`
 
 
-
+// const initialImageState = {
+  //   left: 0,
+  //   top: 0,
+  //   right: 0,
+  //   bottom: 0
+  // }
   
   function App () {
-    const [ user, setUser ] = useReducer(formReducer, initialUserState)
+    const initialState = {
+      input: '',
+      imgUrl: '',
+      box: {},
+      route: 'signin',
+      isSignedIn: false,
+      test: '',
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        entries: 0,
+        regDate: ''
+      }
+    }
+
+    const [ user, setUser ] = useReducer((user, newUser)=>({...user,...newUser}), initialState)
     
     // const [ image, setImage ] = useReducer((image,newImage)=>({...image, newImage}), initialImageState)
     
 
   const loadUser = (data) => {
-    setUser({
-      type:"LOAD_USER", 
-      payload: { 
-        id: data.id, 
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        regDate: data.joined,
-      }
-    })
     console.log(data)
+    setUser({user: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      entries: data.entries,
+      regDate: data.regDate
+    }})
   }
-  console.log(user)
 
 
   // const calFaceLocation = (data) => {
@@ -55,14 +73,13 @@ const apiCall = `http://localhost:4009`
 
     console.log(clarifaiFace)
     // const image = document.getElementById('inputImage');
-    const image = document.getElementById('inputimage');
-    console.log(image)
+    const image = document.getElementById('inputImg');
     const width = Number(image.width);
     const height = Number(image.height);
     
     return ({
       left: clarifaiFace.left_col * width,
-      top: clarifaiFace.top_row * height,
+      Row: clarifaiFace.top_row * height,
       right: width - (clarifaiFace.right_col * width),
       bottom: height - (clarifaiFace.bottom_row * height)
     })
@@ -70,25 +87,18 @@ const apiCall = `http://localhost:4009`
 
   
 
-
   
   const displayFaceBox = (box) => {
-    // const update = ()=>{
-    //   return {
-    //     ...user,
-    //     box: box
-    //   }
-    // }
-    // setUser(update())
+    const update = {...user,...box}
+    setUser(update)
+    console.log(update)
   };
 
 
   const onInputChange = (event) => {
-    // setUser({input: event.target.value})
-    console.log(user)
+    setUser({input: event.target.value})
   };
-
-
+  
   // const onButtonSubmit = () => {
   //   setUser({imgUrl: user.input})
   //       fetch(`${apiCall}/imageurl`, {
@@ -162,12 +172,11 @@ const apiCall = `http://localhost:4009`
 
   const onRouteChange = (route) => {
     if(route === 'signout') {
-      setUser({type:"SIGN_OUT"})
+      setUser(initialState)
     } else if(route === 'home') {
-      setUser({type:"SIGNED_IN"})
+      setUser({isSignedIn: true})
     }
-    // setUser({route: route})
-    console.log(user)
+    setUser({route: route})
   }
 
 

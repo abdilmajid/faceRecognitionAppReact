@@ -1,36 +1,34 @@
 import { useReducer } from 'react';
+import formReducer, { initialSignInState } from '../../formReducer';
 
 const apiCall = `http://localhost:4009`
 
 
-function SignIn ({newUser, onRouteChange}) {
-  const initialState = {
-    signInEmail: '',
-    signInPassword: ''
-  }
-  const [ signIn, setSignIn ] = useReducer((signIn, newSignIn)=>({...signIn,...newSignIn}), initialState)
+function SignIn ({loadUser, onRouteChange}) {
+  const [ signIn, setSignIn ] = useReducer(formReducer, initialSignInState);
 
 
-  const onEmailChange = (event) => {
-    setSignIn({signInEmail: event.target.value})
-  }
-  const onPasswordChange = (event) => {
-    setSignIn({signInPassword: event.target.value})
-  }
+  const handleChange = (event) => {
+    setSignIn({
+      type:"SIGN_IN", 
+      payload: { name:event.target.name, value:event.target.value }
+    });
+  };
+
 
   const onSignInSubmit = () => {
     fetch(`${apiCall}/signin`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        email: signIn.signInEmail,
-        password: signIn.signInPassword
+        email: signIn.email,
+        password: signIn.password
       })
     })
       .then(response => response.json())
       .then(user => {
         if (user.id) {
-          newUser(user)
+          loadUser(user)
           onRouteChange('home');
         } else {
           alert('Wrong Email/Password')
@@ -38,7 +36,7 @@ function SignIn ({newUser, onRouteChange}) {
       })
   }
 
-
+  console.log(signIn)
   return (
     <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center'>
         <main className='pa4 nlack-50'>
@@ -53,9 +51,9 @@ function SignIn ({newUser, onRouteChange}) {
                 <input
                   className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                   type='email' 
-                  name='email-address' 
+                  name='email' 
                   id='email-address'
-                  onChange={onEmailChange}
+                  onChange={handleChange}
                 />       
               </div>
               <div className='mv3'>
@@ -66,7 +64,7 @@ function SignIn ({newUser, onRouteChange}) {
                   type='password' 
                   name='password' 
                   id='password'
-                  onChange={onPasswordChange}
+                  onChange={handleChange}
                 /> 
               </div>
             </fieldset>

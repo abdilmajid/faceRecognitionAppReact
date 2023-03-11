@@ -1,22 +1,20 @@
 import { useReducer } from 'react';
+import formReducer, { initialRegState } from '../../formReducer';
 
 const apiCall = `http://localhost:4009`
 
 
-function Register ({newUser,onRouteChange}) {
-  const initialState = {
-      name: '',
-      email: '',
-      password: ''
+function Register ({loadUser,onRouteChange}) {
+  const [ register, setRegister ] = useReducer((formReducer, initialRegState))
+
+
+  const handleChange = (event) => {
+    setRegister({
+      type:"REGISTER",
+      payload: { name:event.target.name, value:event.target.value }
+    })
   }
 
-  // const [ register, setRegister ] = useState(initialState);
-
-  const [ register, setRegister ] = useReducer((register, newRegiseter)=>({...register,...newRegiseter}), initialState)
-
-  const onNameChange = (event) => setRegister({name: event.target.value});
-  const onEmailChange = (event) => setRegister({email: event.target.value});
-  const onPasswordChange = (event) => setRegister({password: event.target.value});
   
   const onRegisterSubmit = () => {
     const {name, email, password} = register;
@@ -35,7 +33,7 @@ function Register ({newUser,onRouteChange}) {
           .then(res => res.json())
           .then(user => {
             if(user.id){
-              newUser(user)
+              loadUser(user)
               onRouteChange('home')
             } else {
               alert('Sorry Email already exists')
@@ -44,6 +42,7 @@ function Register ({newUser,onRouteChange}) {
     }
   }
 
+  console.log(register)
 
     return (
       <article className='br3 ba b--black-10 mv4 w-100 w-50-m w-25-1 mw6 shadow-5 center'>
@@ -60,7 +59,7 @@ function Register ({newUser,onRouteChange}) {
                     type='text' 
                     name='name' 
                     id='name'
-                    onChange={onNameChange}
+                    onChange={handleChange}
                   />       
                </div>
                <div className='mt3'>
@@ -69,9 +68,9 @@ function Register ({newUser,onRouteChange}) {
                  <input 
                     className='pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100' 
                     type='email' 
-                    name='email-address' 
+                    name='email' 
                     id='email-address'
-                    onChange={onEmailChange}
+                    onChange={handleChange}
                   />       
                </div>
                <div className='mv3'>
@@ -82,7 +81,7 @@ function Register ({newUser,onRouteChange}) {
                     type='password' 
                     name='password' 
                     id='password'
-                    onChange={onPasswordChange}
+                    onChange={handleChange}
                   /> 
                </div>
              </fieldset>
