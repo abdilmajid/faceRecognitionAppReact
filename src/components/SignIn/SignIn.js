@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import formReducer, { initialSignInState } from '../../formReducer';
 
-const apiCall = `http://localhost:4009`
+const apiCall = process.env.REACT_APP_API_CALL
 
 
 function SignIn ({loadUser, onRouteChange}) {
@@ -15,7 +15,6 @@ function SignIn ({loadUser, onRouteChange}) {
     });
   };
 
-  //test
 
   const onSignInSubmit = () => {
     fetch(`${apiCall}/signin`, {

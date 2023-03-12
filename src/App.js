@@ -9,15 +9,11 @@ import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 import formReducer ,{ initialUserState } from './formReducer';
 
-const apiCall = `http://localhost:4009`
+const apiCall = process.env.REACT_APP_API_CALL
 
-
-
-  
+ 
   function App () {
     const [ user, setUser ] = useReducer(formReducer, initialUserState)
-    
-    // const [ image, setImage ] = useReducer((image,newImage)=>({...image, newImage}), initialImageState)
     
 
   const loadUser = (data) => {
@@ -31,23 +27,7 @@ const apiCall = `http://localhost:4009`
         regDate: data.joined,
       }
     })
-    console.log(data)
   }
-  console.log(user)
-
-
-  // const calFaceLocation = (data) => {
-  //   const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-  //   const image = document.getElementById('inputImg'); 
-  //   const width = Number(image.width);
-  //   const height = Number(image.height);
-  //   return {
-  //     leftCol: clarifaiFace.left_col * width,
-  //     topRow: clarifaiFace.top_row * height,
-  //     rightCol: width - (clarifaiFace.right_col * width),
-  //     bottomRow: height - (clarifaiFace.bottom_row * height)
-  //   }
-  // }
 
   const calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -62,10 +42,7 @@ const apiCall = `http://localhost:4009`
     })
   }
 
-  
-
-
-  
+   
   const displayFaceBox = (box) => {
     setUser({
       type: "SUBMIT_IMG",
@@ -76,13 +53,8 @@ const apiCall = `http://localhost:4009`
         leftCol: box.leftCol
       }
     })
-    console.log(box)
   };
 
-
-  // const onInputChange = (event) => {
-  //   setUser({input: event.target.value})
-  // };
 
   const onInputChange = (event) => {
     setUser({
@@ -95,41 +67,7 @@ const apiCall = `http://localhost:4009`
   };
 
 
-  // const onButtonSubmit = () => {
-  //   setUser({imgUrl: user.input})
-  //       fetch(`${apiCall}/imageurl`, {
-  //         method: 'post',
-  //         headers: {'Content-Type': 'application/json'},
-  //         body: JSON.stringify({
-  //           input: user.input
-  //         })
-  //       })
-  //       .then(response => response.json())
-  //       .then( response => {
-  //         console.log(user)
-  //         if(response) {
-  //           fetch(`${apiCall}/image`, {
-  //             method: 'put',
-  //             headers: {'Content-Type': 'application/json'},
-  //             body: JSON.stringify({
-  //               id: user.user.id
-  //             })
-  //           })
-  //             .then(response => response.json())
-  //             .then(count => {
-  //               setUser(Object.assign(user.user, {entries: count}))
-  //             })
-  //             .catch(console.log)
-  //         }
-  //         console.log('107')
-  //         displayFaceBox(calculateFaceLocation(response))
-  //       })
-  //       .catch( err => console.log(err));
-  // }
-  
-
   const onButtonSubmit = () => {
-    console.log(user)
         fetch(`${apiCall}/imageurl`, {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
@@ -139,7 +77,6 @@ const apiCall = `http://localhost:4009`
         })
         .then(response => response.json())
         .then( response => {
-          console.log(user)
           if(response) {
             fetch(`${apiCall}/image`, {
               method: 'put',
@@ -150,13 +87,11 @@ const apiCall = `http://localhost:4009`
             })
               .then(response => response.json())
               .then(count => {
-                console.log(count)
                 setUser({type:"GET_COUNT", payload:{entries:count.entries}})
               })
               .catch(console.log)
           }
           displayFaceBox(calculateFaceLocation(response))
-          console.log(response)
         })
         .catch( err => console.log(err));
   }
@@ -186,7 +121,6 @@ const apiCall = `http://localhost:4009`
             <Logo />
             <Rank name={user.user.name} entries={user.user.entries}/>
             <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit}/>   
-            {/* <FaceRecognition imgUrl={imgUrl} box={box}/> */}
             <FaceRecognition imgUrl={imgUrl} box={box}/>
           </div>  
       : (

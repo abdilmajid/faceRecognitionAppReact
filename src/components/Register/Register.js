@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import formReducer, { initialRegState } from '../../formReducer';
 
-const apiCall = `http://localhost:4009`
+const apiCall = process.env.REACT_APP_API_CALL
 
 
 function Register ({loadUser,onRouteChange}) {
