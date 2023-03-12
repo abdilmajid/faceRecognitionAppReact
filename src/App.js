@@ -33,7 +33,7 @@ const apiCall = `http://localhost:4009`
     })
     console.log(data)
   }
-  console.log(user.input,user.user.id)
+  console.log(user)
 
 
   // const calFaceLocation = (data) => {
@@ -150,7 +150,8 @@ const apiCall = `http://localhost:4009`
             })
               .then(response => response.json())
               .then(count => {
-                setUser(Object.assign(user.user, {entries: count}))
+                console.log(count)
+                setUser({type:"GET_COUNT", payload:{entries:count.entries}})
               })
               .catch(console.log)
           }

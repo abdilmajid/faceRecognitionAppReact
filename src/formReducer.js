@@ -87,6 +87,14 @@ const formReducer = (state, action)=>{
           topRow: action.payload.topRow
         }
       }
+    case "GET_COUNT":
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          entries: action.payload.entries
+        }
+      }
     default:
       return state;
   }
