@@ -73,7 +73,19 @@ const formReducer = (state, action)=>{
     case "INPUT_IMG":
       return {
         ...state,
-        input: action.payload.value
+        [action.payload.name]: action.payload.value,
+        imgUrl: action.payload.value
+      }
+    case "SUBMIT_IMG":
+      return {
+        ...state,
+        box: {
+          ...state.box,
+          bottomRow: action.payload.bottomRow,
+          leftCol: action.payload.leftCol,
+          rightCol: action.payload.rightCol,
+          topRow: action.payload.topRow
+        }
       }
     default:
       return state;

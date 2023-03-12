@@ -33,7 +33,7 @@ const apiCall = `http://localhost:4009`
     })
     console.log(data)
   }
-  console.log(user)
+  console.log(user.input,user.user.id)
 
 
   // const calFaceLocation = (data) => {
@@ -50,21 +50,15 @@ const apiCall = `http://localhost:4009`
   // }
 
   const calculateFaceLocation = (data) => {
-    console.log(data)
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-
-    console.log(clarifaiFace)
-    // const image = document.getElementById('inputImage');
     const image = document.getElementById('inputimage');
-    console.log(image)
     const width = Number(image.width);
     const height = Number(image.height);
-    
     return ({
-      left: clarifaiFace.left_col * width,
-      top: clarifaiFace.top_row * height,
-      right: width - (clarifaiFace.right_col * width),
-      bottom: height - (clarifaiFace.bottom_row * height)
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
     })
   }
 
@@ -73,20 +67,31 @@ const apiCall = `http://localhost:4009`
 
   
   const displayFaceBox = (box) => {
-    // const update = ()=>{
-    //   return {
-    //     ...user,
-    //     box: box
-    //   }
-    // }
-    // setUser(update())
+    setUser({
+      type: "SUBMIT_IMG",
+      payload: {
+        topRow: box.topRow, 
+        rightCol: box.rightCol, 
+        bottomRow: box.bottomRow, 
+        leftCol: box.leftCol
+      }
+    })
+    console.log(box)
   };
 
 
+  // const onInputChange = (event) => {
+  //   setUser({input: event.target.value})
+  // };
+
   const onInputChange = (event) => {
-    setUser({type:"INPUT_IMG", payload: {input: event.payload.value}})
-    console.log(event.target.value)
-    console.log(user)
+    setUser({
+      type:"INPUT_IMG",
+      payload: {
+        name:event.target.name, 
+        value:event.target.value
+      }
+    })
   };
 
 
@@ -125,8 +130,6 @@ const apiCall = `http://localhost:4009`
 
   const onButtonSubmit = () => {
     console.log(user)
-    setUser(Object.assign({imgUrl: user.input}))
-    console.log(user)
         fetch(`${apiCall}/imageurl`, {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
@@ -151,10 +154,8 @@ const apiCall = `http://localhost:4009`
               })
               .catch(console.log)
           }
-
           displayFaceBox(calculateFaceLocation(response))
-          
-          console.log(user)
+          console.log(response)
         })
         .catch( err => console.log(err));
   }

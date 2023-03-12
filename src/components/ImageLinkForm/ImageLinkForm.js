@@ -1,9 +1,6 @@
 import './ImageLinkForm.css';
 
 const ImageLinkForm = ({onInputChange, onButtonSubmit}) => {
-
-  
-
   return (
     <div>
       <p className='f3'>
@@ -15,6 +12,7 @@ const ImageLinkForm = ({onInputChange, onButtonSubmit}) => {
               className='f4 pa2 w-70 center' 
               type='text' 
               placeholder='Image URL'
+              name="input"
               onChange={onInputChange}
               />
           <button 
