@@ -84,7 +84,8 @@ const apiCall = `http://localhost:4009`
 
 
   const onInputChange = (event) => {
-    // setUser({input: event.target.value})
+    setUser({type:"INPUT_IMG", payload: {input: event.payload.value}})
+    console.log(event.target.value)
     console.log(user)
   };
 
@@ -161,13 +162,14 @@ const apiCall = `http://localhost:4009`
   
 
   const onRouteChange = (route) => {
-    if(route === 'signout') {
-      setUser({type:"SIGN_OUT"})
-    } else if(route === 'home') {
-      setUser({type:"SIGNED_IN"})
+    const update = ()=>{
+      return route==='home'
+            ?{type:"SIGNED_IN"}
+            :(route==='register'
+            ?{type:'NAV_REGISTER'}
+            :{type:"SIGN_OUT"})
     }
-    // setUser({route: route})
-    console.log(user)
+    setUser(update())
   }
 
 

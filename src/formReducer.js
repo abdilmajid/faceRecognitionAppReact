@@ -27,25 +27,6 @@ const initialRegState = {
     password: ''
 }
 
-// const [ register, setRegister ] = useReducer((register, newRegiseter)=>({...register,...newRegiseter}), initialRegState)
-
-// const onNameChange = (event) => {
-//   setRegister({name: event.target.value})
-// };
-// const onEmailChange = (event) => {
-//   setRegister({email: event.target.value})
-// };
-// const onPasswordChange = (event) => {
-//   setRegister({password: event.target.value})
-// };
-
-// const onEmailChange = (event) => {
-//   setSignIn({signInEmail: event.target.value})
-//   console.log(event.target.value)
-// }
-// const onPasswordChange = (event) => {
-//   setSignIn({signInPassword: event.target.value})
-// }
 
 const formReducer = (state, action)=>{
   switch (action.type) {
@@ -65,6 +46,12 @@ const formReducer = (state, action)=>{
         isSignedIn: false,
         route:"signin"
       };
+    case "NAV_REGISTER":
+      return {
+        ...state,
+        isSignedIn: false,
+        route:"register"
+      }
     case "SIGNED_IN":
       return {
         ...state,
@@ -82,6 +69,11 @@ const formReducer = (state, action)=>{
           entries: action.payload.entries,
           regDate: action.payload.regDate
         }
+      }
+    case "INPUT_IMG":
+      return {
+        ...state,
+        input: action.payload.value
       }
     default:
       return state;
