@@ -5,10 +5,11 @@ const apiCall = process.env.REACT_APP_API_CALL
 
 
 function Register ({loadUser,onRouteChange}) {
-  const [ register, setRegister ] = useReducer((formReducer, initialRegState))
+  const [ register, setRegister ] = useReducer(formReducer, initialRegState)
 
 
   const handleChange = (event) => {
+    console.log(event)
     setRegister({
       type:"REGISTER",
       payload: { name:event.target.name, value:event.target.value }
